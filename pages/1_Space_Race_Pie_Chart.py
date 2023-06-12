@@ -46,6 +46,26 @@ def generate_pie(df, lower_bound, upper_bound):
     #plt.savefig("/home/vicent/miarfid/pid/graphs2/launches_by_country.svg", bbox_inches='tight')
     plt.clf()
 
+def generate_pie_company(df, lower_bound, upper_bound):
+    grouped_un = df.groupby('Company').size().reset_index(name='counts')
+    grouped_un = grouped_un.sort_values(by='counts', ascending=False)
+
+    filtered_df = df[(df['Year'] >= lower_bound) & (df['Year'] <= upper_bound)]
+    grouped = filtered_df.groupby('Company').size().reset_index(name='counts')
+    grouped = grouped.sort_values(by='counts', ascending=False)
+
+    top5 = grouped.head(30)
+    sns.set_style('darkgrid')
+    sns.set_palette(sns.color_palette("hls", 30))
+    fig, ax = plt.pie(grouped['counts'])
+    plt.title('Launches by Company')
+
+    plt.legend(labels=top5['Company'], loc='center left', bbox_to_anchor=(1, 0.5),ncol=2)
+
+    st.pyplot(plt)
+    #plt.savefig("/home/vicent/miarfid/pid/graphs2/launches_by_country.svg", bbox_inches='tight')
+    plt.clf()
+
 st.set_page_config(page_title="Space Race Pie Chart", page_icon="🚀")
 st.markdown("# Space Race visualized in a Pie Chart")
 
@@ -53,4 +73,6 @@ values = st.slider('Select a range of values', 1957, 2022, (1957, 2022))
 
 launch_df = load_data()
 generate_pie(launch_df, values[0], values[1])
+generate_pie_company(launch_df, values[0], values[1])
+
 
