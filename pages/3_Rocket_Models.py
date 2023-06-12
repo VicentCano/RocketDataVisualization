@@ -46,7 +46,6 @@ def generate_bar(df, top):
 
 st.set_page_config(page_title="Top X rocket models", page_icon="🚀")
 st.markdown("# Top X rocket models")
-st.sidebar.header("Top X rocket models")
 
 launch_df = load_data()
 
