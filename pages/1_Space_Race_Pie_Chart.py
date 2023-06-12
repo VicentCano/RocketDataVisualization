@@ -37,7 +37,6 @@ def generate_pie(df, lower_bound, upper_bound):
     pallette_dict = {}
     for country, color in zip(grouped_un['Country'].unique(), sns.color_palette("hls", 16).as_hex()):
         pallette_dict[country] = color
-    print(pallette_dict)
     fig, ax = plt.pie(grouped['counts'], colors=[pallette_dict.get(country, 'gray') for country in grouped['Country']])
     plt.title('Launches by Country')
 
@@ -47,7 +46,7 @@ def generate_pie(df, lower_bound, upper_bound):
     #plt.savefig("/home/vicent/miarfid/pid/graphs2/launches_by_country.svg", bbox_inches='tight')
     plt.clf()
 
-st.set_page_config(page_title="Space Race Pie Chart", page_icon="🧑‍🚀")
+st.set_page_config(page_title="Space Race Pie Chart", page_icon="🚀")
 st.markdown("# Space Race visualized in a Pie Chart")
 st.sidebar.header("Space Race Pie Chart")
 
