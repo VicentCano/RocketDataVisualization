@@ -19,7 +19,7 @@ import pandas as pd
 import folium
 from streamlit_folium import st_folium
 
-LOGGER = get_logger(__name__)
+#LOGGER = get_logger(__name__)
 APP_TITLE = 'Launches by country'
 
 @st.cache_data
@@ -69,44 +69,43 @@ def display_map(df, year, countries_geo):
     folium.LayerControl().add_to(m)
     st_folium(m, width=700, height=450,  returned_objects=[])
 
-def run():
-    st.set_page_config(
-        page_title=APP_TITLE,
-        page_icon="🚀",
-    )
+
+st.set_page_config(
+    page_title=APP_TITLE,
+    page_icon="🚀",
+)
+
+launch_df = load_data()
+countries_geo = 'countries.geojson'
+st.write("# " + APP_TITLE)
+
+country_list = list(launch_df['Country'].unique())
+
+
+
+country_name = display_country_filter(country_list)
+year = display_time_filters(launch_df)
+display_map(launch_df, year, countries_geo)
+
+#Display Metrics
+
+
+
+if country_name != '00':
+    st.subheader(f'Launch statistics: {country_name} {year}')  
+    df_year = launch_df[(launch_df['Year'] == year)]
+    if country_name in df_year['Country'].unique():
+        country_stats = get_total_price_and_count(df_year)
+        n_launches = country_stats[country_stats['Country'] == country_name]['count']
+        p_launches = country_stats[country_stats['Country'] == country_name]['Price']
+    else:
+        n_launches = 0
+        p_launches = 0
+    col1, col2 = st.columns(2)
+    with col1:
+        st.metric('Number of launches', n_launches)
+    with col2:
+        st.metric('Cost of launches*', str(round(float(p_launches),2)) + " million $" )
     
-    launch_df = load_data()
-    countries_geo = 'countries.geojson'
-    st.write("# " + APP_TITLE)
+    st.write("*Many countries don't share the price of their launches, this statistic is based SOLELY on the sum of available data, so, in general, the real cost of launches tends to be bigger.")
 
-    country_list = list(launch_df['Country'].unique())
-
-    
-
-    country_name = display_country_filter(country_list)
-    year = display_time_filters(launch_df)
-    display_map(launch_df, year, countries_geo)
-
-    #Display Metrics
-
-
-    
-    if country_name != '00':
-        st.subheader(f'Launch statistics: {country_name} {year}')  
-        df_year = launch_df[(launch_df['Year'] == year)]
-        if country_name in df_year['Country'].unique():
-            country_stats = get_total_price_and_count(df_year)
-            n_launches = country_stats[country_stats['Country'] == country_name]['count']
-            p_launches = country_stats[country_stats['Country'] == country_name]['Price']
-        else:
-            n_launches = 0
-            p_launches = 0
-        col1, col2 = st.columns(2)
-        with col1:
-            st.metric('Number of launches', n_launches)
-        with col2:
-            st.metric('Cost of launches*', str(round(float(p_launches),2)) + " million $" )
-        
-        st.write("*Many countries don't share the price of their launches, this statistic is based SOLELY on the sum of available data, so, in general, the real cost of launches tends to be bigger.")
-if __name__ == "__main__":
-    run()

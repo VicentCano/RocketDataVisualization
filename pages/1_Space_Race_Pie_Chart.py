@@ -35,7 +35,7 @@ def generate_pie(df, lower_bound, upper_bound):
     grouped = grouped.sort_values(by='counts', ascending=False)
     sns.set_style('darkgrid')
     pallette_dict = {}
-    for country, color in zip(grouped_un['Country'].unique(), sns.color_palette("hls", 16).as_hex()):
+    for country, color in zip(grouped_un['Country'].unique(), sns.color_palette("hls", 17).as_hex()):
         pallette_dict[country] = color
     fig, ax = plt.pie(grouped['counts'], colors=[pallette_dict.get(country, 'gray') for country in grouped['Country']])
     plt.title('Launches by Country')
@@ -67,12 +67,18 @@ def generate_pie_company(df, lower_bound, upper_bound):
     plt.clf()
 
 st.set_page_config(page_title="Space Race Pie Charts", page_icon="🚀")
-st.markdown("# Space Race visualized in Pie Charts")
+st.markdown("""# Space Race visualized in Pie Charts
+
+Choose a range to show how the number of launches was split across different countries and companies!
+""")
 
 values = st.slider('Select a range of values', 1957, 2022, (1957, 2022))
 
 launch_df = load_data()
 generate_pie(launch_df, values[0], values[1])
 generate_pie_company(launch_df, values[0], values[1])
+
+st.write("Note that in the country pie chart the colors have been fixed to specific countries for clarity purpose. This was possible due to the small number of countries and its steadyness. This is not the case for the companies pie chart, which has varying color legends for each range, since there ia a huge number of companies and they vary a lot through the years.")
+
 
 
