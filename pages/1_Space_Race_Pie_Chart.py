@@ -66,8 +66,8 @@ def generate_pie_company(df, lower_bound, upper_bound):
     #plt.savefig("/home/vicent/miarfid/pid/graphs2/launches_by_country.svg", bbox_inches='tight')
     plt.clf()
 
-st.set_page_config(page_title="Space Race Pie Chart", page_icon="🚀")
-st.markdown("# Space Race visualized in a Pie Chart")
+st.set_page_config(page_title="Space Race Pie Charts", page_icon="🚀")
+st.markdown("# Space Race visualized in Pie Charts")
 
 values = st.slider('Select a range of values', 1957, 2022, (1957, 2022))
 
