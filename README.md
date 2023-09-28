@@ -1,5 +1,4 @@
 # RocketDataVisualization
-
 Welcome to Rocket Launches Data Visualization 🚀!
 
 One can be a fantastic ML Engineer or Data Scientist, but that is only useful with efficiently communicating your results to any audience.
